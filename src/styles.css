@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Athiti:400,700&subset=vietnamese');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Athiti', sans-serif;
+}
+html,body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+body {
+    background: url(/assets/images/background.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/***
+ * Slider
+ **/
+.slider {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex: 1;
+    width: 4px;
+    background: #CCC;
+    border-radius: 3px;
+    position: relative;
+    opacity: 0;
+    transition: all ease 0.5s;
+}
+
+.volume-control:hover .slider{
+    opacity: 1;
+}
+
+.slider .ui-slider-range {
+    width: 4px;
+    background: #e74c3c;
+    border-radius: 3px;
+}
+
+.slider .ui-slider-handle {
+    width: 16px;
+    height: 16px;
+    background: #c0392b;
+    display: block;
+    border-radius: 50%;
+    position: relative;
+    top: -6px;
+    left: -6px;
+}

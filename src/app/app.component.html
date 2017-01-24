@@ -1,3 +1,38 @@
-<h1>
-  {{title}}
-</h1>
+<div class="player" [@fade]="'in'" *ngIf="loaded && !playlistMode">
+  <img src="{{thumbnailUrl}}" alt="thumbnail" class="thumbnail">
+  <div class="content">
+    <div class="title">{{name}}</div>
+    <div class="artist">{{artist}}</div>
+    <div class="controls">
+      <div class="progress-time cf">
+        <span class="left">{{timeLeft}}</span>
+        <span class="right">{{timeRemain}}</span>
+      </div>
+      <div class="progress" (mousedown)="seek($event)"><div class="bar" [style.width]="currentProgress + '%'"></div></div>
+      <div class="loop-control cf">
+        <div class="left loop" [class.active]="loop" (click)="loop = true"></div>
+        <div class="right shuffle" [class.active]="!loop" (click)="loop = false"></div>
+      </div>
+      <div class="playback-control">
+        <div class="prev" (click)="next()"></div>
+        <div class="play" [class.paused]="audio != null && audio.paused" (click)="togglePlayState()"></div>
+        <div class="next" (click)="next(-1)"></div>
+      </div>
+    </div>
+    <div class="playlist-button" (click)="playlistMode = !playlistMode"></div>
+    <div class="volume-control">
+      <div class="volume-button" [class.muted]="audio.muted" (click)="audio.muted = !audio.muted"></div>
+      <div class="slider"></div>
+    </div>
+  </div>
+</div>
+<div class="playlist" [@fade]="'in'" *ngIf="playlistMode" (click)="playlistMode = false">
+    <div class="scroll-container">
+      <ul>
+        <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)" (click)="$event.stopPropagation()">
+          <div class="name">{{song.name}}</div>
+          <div class="artist">{{song.artist}}</div>
+        </li>
+      </ul>
+    </div>
+</div>
