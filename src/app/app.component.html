@@ -22,9 +22,9 @@
           <div class="right shuffle" [class.active]="!loop" (click)="loop = false"></div>
         </div>
         <div class="playback-control">
-          <div class="prev" (click)="next()"></div>
+          <div class="prev" (click)="next(-1)"></div>
           <div class="play" [class.paused]="audio != null && audio.paused" (click)="togglePlayState()"></div>
-          <div class="next" (click)="next(-1)"></div>
+          <div class="next" (click)="next()"></div>
         </div>
       </div>
       <div class="playlist-button" (click)="playlistMode = !playlistMode"></div>
