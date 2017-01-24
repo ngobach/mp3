@@ -7,6 +7,20 @@ import { Song } from './song';
 declare const $: any;
 
 const THUMBNAIL_URL = 'https://graph.facebook.com/134325980235485/picture?width=180&height=180';
+const ASSESTS_IMAGES: string[] = [
+  'loop.png',
+  'loop_.png',
+  'next.png',
+  'pause.png',
+  'play.png',
+  'playlist.png',
+  'prev.png',
+  'shuffle.png',
+  'shuffle_.png',
+  'volume.png',
+  'volume_.png',
+  THUMBNAIL_URL
+];
 
 @Component({
   selector: 'app-root',
@@ -14,24 +28,27 @@ const THUMBNAIL_URL = 'https://graph.facebook.com/134325980235485/picture?width=
   styleUrls: ['./app.component.css'],
   animations: [
     trigger('fade', [
-      transition(':enter', [
+      state('out', style({
+        display: 'none'
+      })),
+      transition(':enter, out => *', [
         style({
           opacity: 0,
-          transform: 'scale(.8)'
+          transform: 'scale(1.2)'
         }),
         animate('300ms ease-out', style({
           opacity: 1,
           transform: 'scale(1)'
         })),
       ]),
-      transition(':leave', [
+      transition(':leave, * => out', [
         style({
           opacity: 1,
           transform: 'scale(1)'
         }),
         animate('300ms ease-out', style({
           opacity: 0,
-          transform: 'scale(.8)'
+          transform: 'scale(1.2)'
         })),
       ])
     ])
@@ -46,11 +63,11 @@ export class AppComponent implements OnInit {
   private playlistMode = false;
   private timeLeft = '00:00';
   private timeRemain = '00:00';
-
+  private assetsLoaded = false;
   constructor(private title: Title, private musicService: MusicService, private er: ElementRef) {}
 
   private get loaded(): boolean {
-    return this.songs != null;
+    return this.songs != null && this.assetsLoaded;
   }
 
   private get name(): string {
@@ -86,15 +103,46 @@ export class AppComponent implements OnInit {
     });
 
     this.title.setTitle('Ngô Xuân Bách');
+
+    // Load playlist from zmp3
     this.musicService.getList()
       .then(data => this.songs = data)
       .then(() => this.play(this.songs[Math.trunc(Math.random() * this.songs.length)]))
       .then(() => setTimeout(() => this.initSlider(), 1));
+
+    // Load image assets
+    Promise.all(ASSESTS_IMAGES.map(file => new Promise((res, rej) => {
+      const img = new Image();
+      if (file.startsWith('http')) {
+        img.src = file;
+      } else {
+        img.src = '/assets/' + file;
+      }
+      img.onload = res;
+      img.onerror = rej;
+    }))).then(() => this.assetsLoaded = true);
+
     $(document).on('keyup', ev => {
       if (ev.keyCode === 27) {
-        this.playlistMode = false;
+        this.playlistMode = !this.playlistMode;
+      } else if (ev.keyCode === 32) {
+        if (!isNaN(this.audio.duration)) {
+          if (this.audio.paused) {
+            this.audio.play();
+          } else {
+            this.audio.pause();
+          }
+        }
       }
     });
+
+    $(document).on('mouseup', e => {
+      if (e.button === 2 && this.loaded) {
+        e.preventDefault();
+        this.playlistMode = !this.playlistMode;
+      }
+    });
+    $(document).on('contextmenu', () => false);
   }
 
   initSlider() {
@@ -107,7 +155,10 @@ export class AppComponent implements OnInit {
         max: 100,
         animate: true,
         orientation: 'vertical',
-        slide: (ev, ui) => this.audio.volume = 1 - ui.value / 100
+        slide: (ev, ui) => {
+          this.audio.volume = 1 - ui.value / 100;
+          this.audio.muted = false;
+        }
     });
   }
 

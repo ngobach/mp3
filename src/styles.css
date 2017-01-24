@@ -28,10 +28,12 @@ body {
     position: relative;
     opacity: 0;
     transition: all ease 0.5s;
+    transition-delay: 0.5s;
 }
 
-.volume-control:hover .slider{
+.volume-control:hover .slider {
     opacity: 1;
+    transition-delay: 0s;
 }
 
 .slider .ui-slider-range {
@@ -49,4 +51,5 @@ body {
     position: relative;
     top: -6px;
     left: -6px;
+    outline: none;
 }
