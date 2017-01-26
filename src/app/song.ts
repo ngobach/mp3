@@ -3,4 +3,5 @@ export interface Song {
     artist: string;
     cover: string;
     source: string;
+    zmp3Id: string;
 }

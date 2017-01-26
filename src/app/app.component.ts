@@ -1,5 +1,6 @@
 import { Component, OnInit, trigger, state, style, transition, animate, ElementRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Subject } from 'rxjs/Subject';
 
 import { MusicService } from './music.service';
 import { Song } from './song';
@@ -64,6 +65,8 @@ export class AppComponent implements OnInit {
   private timeLeft = '00:00';
   private timeRemain = '00:00';
   private assetsLoaded = false;
+  private subThumbnail: Subject<string>;
+
   constructor(private title: Title, private musicService: MusicService, private er: ElementRef) {}
 
   private get loaded(): boolean {
@@ -103,6 +106,12 @@ export class AppComponent implements OnInit {
     });
 
     this.title.setTitle('Ngô Xuân Bách');
+
+    // Subject thumbnail
+    this.subThumbnail = new Subject();
+    this.subThumbnail
+      .switchMap(id => this.musicService.getThumbnail(id))
+      .subscribe(url => this.thumbnailUrl = url);
 
     // Load playlist from zmp3
     this.musicService.getList()
@@ -168,6 +177,7 @@ export class AppComponent implements OnInit {
     this.audio.play();
     this.title.setTitle(song.artist + ' - ' + song.name);
     setTimeout(() => this.updateTime(), 1);
+    this.subThumbnail.next(song.zmp3Id);
   }
 
   fmat(x: number): string {
