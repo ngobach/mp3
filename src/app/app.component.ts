@@ -1,14 +1,14 @@
-import { Component, OnInit, trigger, state, style, transition, animate, ElementRef } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, Inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 import { MusicService } from './music.service';
 import { Song } from './song';
+import { SiteConfig } from './site-config';
 
 declare const $: any;
 
-const THUMBNAIL_URL = 'https://graph.facebook.com/134325980235485/picture?width=180&height=180';
 const ASSESTS_IMAGES: string[] = [
   'loop.png',
   'loop_.png',
@@ -21,8 +21,7 @@ const ASSESTS_IMAGES: string[] = [
   'shuffle_.png',
   'volume.png',
   'volume_.png',
-  'facebook.png',
-  THUMBNAIL_URL
+  'facebook.png'
 ];
 
 @Component({
@@ -58,7 +57,7 @@ const ASSESTS_IMAGES: string[] = [
   ]
 })
 export class AppComponent implements OnInit {
-  private thumbnailUrl = THUMBNAIL_URL;
+  private thumbnailUrl: string = '';
   private audio: HTMLAudioElement;
   private songs: Song[];
   private current: Song;
@@ -69,7 +68,14 @@ export class AppComponent implements OnInit {
   private assetsLoaded = false;
   private subThumbnail: Subject<string>;
 
-  constructor(private title: Title, private musicService: MusicService, private er: ElementRef) {}
+  constructor(
+      private title: Title,
+      private musicService: MusicService,
+      private er: ElementRef,
+      @Inject('SiteConfig') private siteConfig: SiteConfig) {
+    ASSESTS_IMAGES.push(siteConfig.defaultThumbnail);
+    this.thumbnailUrl = siteConfig.defaultThumbnail;
+  }
 
   private get loaded(): boolean {
     return this.songs != null && this.assetsLoaded;
@@ -114,7 +120,7 @@ export class AppComponent implements OnInit {
     this.subThumbnail
       .switchMap(id => this.musicService.getThumbnail(id)
       .catch(() => {
-        return Observable.of(THUMBNAIL_URL);
+        return Observable.of(this.siteConfig.defaultThumbnail);
       }))
       .subscribe(url => this.thumbnailUrl = url);
 

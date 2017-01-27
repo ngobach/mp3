@@ -1,18 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs';
 import { Observable } from 'rxjs/Observable';
+
+import { SiteConfig } from './site-config';
 import { Song } from './song';
 
-const ALBUM_URL = 'https://cors-anywhere.herokuapp.com/http://mp3.zing.vn/json/playlist/get-source/playlist/knJHtLpJFszQVTkFxyFHZn';
+const ALBUM_URL_PREFIX = 'https://cors-anywhere.herokuapp.com/http://mp3.zing.vn/json/playlist/get-source/playlist/knJHtLpJFszQVTkFxyFHZn';
 
 @Injectable()
 export class MusicService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, @Inject('SiteConfig') private siteConfig: SiteConfig) { }
 
   getList(): Promise<Array<Song>> {
-    return this.http.get(ALBUM_URL).toPromise().then(resp => (resp.json().data as any[]).map(song => ({
+    return this.http.get(ALBUM_URL_PREFIX + this.siteConfig.albumId).toPromise().then(resp => (resp.json().data as any[]).map(song => ({
       name: song.name,
       artist: song.artist,
       source: song.source_list[0],
