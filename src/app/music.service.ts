@@ -10,8 +10,11 @@ const ALBUM_URL_PREFIX = 'https://cors-anywhere.herokuapp.com/http://mp3.zing.vn
 
 @Injectable()
 export class MusicService {
+  private _cache: Map<string, string>;
 
-  constructor(private http: Http, @Inject('SiteConfig') private siteConfig: SiteConfig) { }
+  constructor(private http: Http, @Inject('SiteConfig') private siteConfig: SiteConfig) {
+    this._cache = new Map();
+  }
 
   getList(): Promise<Array<Song>> {
     return this.http.get(ALBUM_URL_PREFIX + this.siteConfig.albumId).toPromise().then(resp => (resp.json().data as any[]).map(song => ({
@@ -24,12 +27,21 @@ export class MusicService {
   }
 
   getThumbnail(id: string): Observable<string> {
-    return Observable.of(id).switchMap(id => {
-      return this.http.get('https://cors-anywhere.herokuapp.com/http://m.mp3.zing.vn/bai-hat/Nothing/' + id + '.html');
-    })
-    .switchMap(r => {
-      const re = /url\(\'(.+?)\'\)/;
-      const url = r.text().match(re)[1];
+    let obs: Observable<string>;
+    if (this._cache.has(id)) {
+      obs = Observable.of(this._cache.get(id));
+    } else {
+      obs = this.http
+        .get('https://cors-anywhere.herokuapp.com/http://m.mp3.zing.vn/bai-hat/Nothing/' + id + '.html')
+        .map(r => {
+          const re = /url\(\'(.+?)\'\)/;
+          const url = r.text().match(re)[1];
+          this._cache.set(id, url);
+          return url;
+        });
+    }
+
+    obs = obs.switchMap(url => {
       const img = new Image();
       img.src = url;
       return new Promise((res, rej) => {
@@ -37,5 +49,6 @@ export class MusicService {
         img.onerror = rej;
       });
     });
+    return obs;
   }
 }
