@@ -1,31 +1,35 @@
 # Mp3
+Website nghe nhạc trực tuyến. Xây dựng trên Angular 2 Framework
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
+## Cài đặt
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Trước tiên cần có các phần mềm: NodeJS và angular-cli.
 
-## Code scaffolding
+* NodeJS: [Tải về](https://nodejs.org/)
+* Angular-CLI: `npm i -g angular-cli`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+## Chỉnh sửa
+
+Để thay đổi thumbnail mặc định, facebook url và album nhạc ZingMP3 có thể thực hiện trong file **src/app/app.module.ts**.
+
+## Run
+
+Để chạy website, gõ lệnh sau khi ở thư mục gốc
+```
+ng serve
+```
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Để build website, có thể chạy lệnh
 
-## Running unit tests
+```
+ng build -prod -sm false
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Sau khi lệnh đã chạy xong ta có được thư mục **dist**, upload thư mục này lên webserver.
 
-## Running end-to-end tests
+## Tác giả
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to GitHub Pages
-
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
-
-## Further help
-
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Website thực hiện bởi **Ngô Xuân Bách** (<http://ngobach.com>).  
+Email: <thanbaiks@gmail.com>.
