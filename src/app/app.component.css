@@ -88,6 +88,8 @@
 
 .thumbnail {
     width: 180px;
+    height: 180px;
+    pointer-events: none;
 }
 
 .content {

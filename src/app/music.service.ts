@@ -28,7 +28,12 @@ export class MusicService {
     .switchMap(r => {
       const re = /url\(\'(.+?)\'\)/;
       const url = r.text().match(re)[1];
-      return this.http.get(url).map(r => url)
+      const img = new Image();
+      img.src = url;
+      return new Promise((res, rej) => {
+        img.onload = () => res(url);
+        img.onerror = rej;
+      });
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, trigger, state, style, transition, animate, ElementRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 import { MusicService } from './music.service';
 import { Song } from './song';
@@ -20,6 +21,7 @@ const ASSESTS_IMAGES: string[] = [
   'shuffle_.png',
   'volume.png',
   'volume_.png',
+  'facebook.png',
   THUMBNAIL_URL
 ];
 
@@ -110,7 +112,10 @@ export class AppComponent implements OnInit {
     // Subject thumbnail
     this.subThumbnail = new Subject();
     this.subThumbnail
-      .switchMap(id => this.musicService.getThumbnail(id))
+      .switchMap(id => this.musicService.getThumbnail(id)
+      .catch(() => {
+        return Observable.of(THUMBNAIL_URL);
+      }))
       .subscribe(url => this.thumbnailUrl = url);
 
     // Load playlist from zmp3

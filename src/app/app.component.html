@@ -9,7 +9,7 @@
   <div class="player" [@fade]="playlistMode?'out':'in'" *ngIf="loaded">
     <img src="{{thumbnailUrl}}" alt="thumbnail" class="thumbnail">
     <div class="content">
-      <div class="title">{{name}}</div>
+      <div class="title">{{name | limit:30}}</div>
       <div class="artist">{{artist}}</div>
       <div class="controls">
         <div class="progress-time cf">
@@ -35,13 +35,16 @@
     </div>
   </div>
 </div>
-<div class="playlist" [@fade]="'in'" *ngIf="playlistMode" (click)="playlistMode = false">
+<div class="playlist" [@fade]="'in'" *ngIf="playlistMode">
     <div class="scroll-container">
       <ul>
-        <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)" (click)="$event.stopPropagation()">
+        <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)">
           <div class="name">{{song.name}}</div>
           <div class="artist">{{song.artist}}</div>
         </li>
       </ul>
     </div>
 </div>
+<a target="_blank" href="https://fb.me/r4yqu4z4" class="facebook-container" [@fade]="'in'" *ngIf="loaded">
+    <img src="/assets/facebook.png" alt="facebook">
+</a>

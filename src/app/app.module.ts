@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { MusicService } from './music.service';
+import { StrLimitPipe } from './str-limit.pipe';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StrLimitPipe
   ],
   imports: [
     BrowserModule,
