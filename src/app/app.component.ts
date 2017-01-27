@@ -128,7 +128,7 @@ export class AppComponent implements OnInit {
     this.musicService.getList()
       .then(data => this.songs = data)
       .then(() => this.play(this.songs[Math.trunc(Math.random() * this.songs.length)]))
-      .then(() => setTimeout(() => this.initSlider(), 1));
+      .then(() => setTimeout(() => this.initSlider(), 100));
 
     // Load image assets
     Promise.all(ASSESTS_IMAGES.map(file => new Promise((res, rej) => {
