@@ -37,7 +37,7 @@
 </div>
 <div class="playlist" [@fade]="'in'" *ngIf="playlistMode">
     <div class="scroll-container">
-      <ul>
+      <ul slimScroll [options]="scrollbarOptions">
         <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)">
           <div class="name">{{song.name}}</div>
           <div class="artist">{{song.artist}}</div>

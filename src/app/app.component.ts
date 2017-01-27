@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { MusicService } from './music.service';
 import { Song } from './song';
 import { SiteConfig } from './site-config';
+import { SlimScrollOptions } from 'ng2-slimscroll';
 
 declare const $: any;
 
@@ -67,6 +68,13 @@ export class AppComponent implements OnInit {
   private timeRemain = '00:00';
   private assetsLoaded = false;
   private subThumbnail: Subject<string>;
+  private scrollbarOptions: SlimScrollOptions = {
+    gridMargin: '0',
+    gridBackground: 'rgba(0, 0, 0, .2)',
+
+    barBackground: '#e74c3c',
+    barWidth: '8',
+  };
 
   constructor(
       private title: Title,

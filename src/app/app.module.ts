@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, OpaqueToken } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { SlimScrollModule } from 'ng2-slimscroll';
 
 import { AppComponent } from './app.component';
 import { MusicService } from './music.service';
@@ -22,7 +23,8 @@ const CONFIG: SiteConfig = {
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    SlimScrollModule
   ],
   providers: [
     MusicService,
