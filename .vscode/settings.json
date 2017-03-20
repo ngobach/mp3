@@ -1,0 +1,12 @@
+{
+    "vsicons.presets.angular": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "dist": true,
+        "e2e": true,
+        "node_modules": true
+    }
+}
