@@ -1,4 +1,4 @@
-import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, Inject, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -8,9 +8,11 @@ import { MusicService } from './music.service';
 import { Song } from './song';
 import { SiteConfig } from './site-config';
 import { SlimScrollOptions } from 'ng2-slimscroll';
+import { PlayerComponent } from './player/player.component';
+
+import * as _ from 'lodash';
 
 declare const $: any;
-
 
 
 @Component({
@@ -46,16 +48,12 @@ declare const $: any;
   ]
 })
 export class AppComponent implements OnInit {
-  private thumbnailUrl = '';
-  private audio: HTMLAudioElement;
   private songs: Song[];
-  private current: Song;
-  private currentProgress = 0;
-  private playlistMode = false;
-  private timeLeft = '00:00';
-  private timeRemain = '00:00';
+  private current: Subject<Song>;
   private assetsLoaded = false;
-  private subThumbnail: Subject<string>;
+  @ViewChild(PlayerComponent)
+  private player: PlayerComponent;
+
   private scrollbarOptions: SlimScrollOptions = {
     gridMargin: '0',
     gridBackground: 'rgba(0, 0, 0, .2)',
@@ -67,159 +65,47 @@ export class AppComponent implements OnInit {
   constructor(
       private title: Title,
       private assetsService: AssetsService,
-      private musicService: MusicService,
-      private er: ElementRef,
-      @Inject('SiteConfig') private siteConfig: SiteConfig) {
-    this.thumbnailUrl = siteConfig.defaultThumbnail;
+      private musicService: MusicService
+  ) {
   }
 
   private get loaded(): boolean {
     return this.songs != null && this.assetsLoaded;
   }
 
-  private get name(): string {
-    return this.current == null ? '' : this.current.name;
-  }
-
-  private get artist(): string {
-    return this.current == null ? '' : this.current.artist;
-  }
-
-  private get loop(): boolean {
-    return this.audio == null || this.audio.loop === true;
-  }
-
-  private set loop(val: boolean) {
-    if (this.audio != null) {
-      this.audio.loop = val;
-    }
-  }
-
   ngOnInit() {
-    const audio = this.audio = window['bach'] = new Audio();
-    audio.autoplay = true;
-    audio.loop = true;
-    audio.addEventListener('timeupdate', () => this.updateTime());
-    audio.addEventListener('ended', () => {
-      const cur = this.songs.indexOf(this.current)
-      let next: number;
-      do {
-        next = Math.trunc(Math.random() * this.songs.length);
-      } while (next === cur);
-      this.play(this.songs[next]);
+    // Variable initialize
+    this.current = new Subject();
+    this.current.subscribe((song) => {
+      if (song != null) {
+        this.title.setTitle(song.artist + ' - ' + song.name);
+        this.player.play(song);
+      }
     });
-
-    this.title.setTitle('Ngô Xuân Bách');
-
-    // Subject thumbnail
-    this.subThumbnail = new Subject();
-    this.subThumbnail
-      .switchMap(id => this.musicService.getThumbnail(id)
-      .catch(() => {
-        return Observable.of(this.siteConfig.defaultThumbnail);
-      }))
-      .subscribe(url => this.thumbnailUrl = url);
-
     // Load playlist from zmp3
     this.musicService.getList()
-      .then(data => this.songs = data)
-      .then(() => this.play(this.songs[Math.trunc(Math.random() * this.songs.length)]))
-      .then(() => setTimeout(() => this.initSlider(), 100));
-
-    // Load image assets
+      .then(data => {
+        this.songs = data;
+        this.current.next(_.sample(this.songs));
+      });
+    // Load assets
     this.assetsService.load().then(() => this.assetsLoaded = true);
 
-    $(document).on('keyup', ev => {
-      if (ev.keyCode === 27) {
-        this.playlistMode = !this.playlistMode;
-      } else if (ev.keyCode === 32) {
-        if (!isNaN(this.audio.duration)) {
-          if (this.audio.paused) {
-            this.audio.play();
-          } else {
-            this.audio.pause();
-          }
-        }
-      }
-    });
-
-    $(document).on('mouseup', e => {
-      if (e.button === 2 && this.loaded) {
-        e.preventDefault();
-        this.playlistMode = !this.playlistMode;
-      }
-    });
-    $(document).on('contextmenu', () => false);
-  }
-
-  initSlider() {
-    const $root = $(this.er.nativeElement);
-    const height = $root.find('.slider')[0].offsetHeight;
-    $root.find('.slider').css('flex', 'none').css('height', height + 'px');
-    $root.find('.slider').slider({
-        value: (1 - this.audio.volume) * 100,
-        range: 'max',
-        max: 100,
-        animate: true,
-        orientation: 'vertical',
-        slide: (ev, ui) => {
-          this.audio.volume = 1 - ui.value / 100;
-          this.audio.muted = false;
-        }
-    });
-  }
-
-  play(song: Song) {
-    this.current = song;
-    this.audio.src = song.source;
-    this.audio.play();
-    this.title.setTitle(song.artist + ' - ' + song.name);
-    setTimeout(() => this.updateTime(), 1);
-    this.subThumbnail.next(song.zmp3Id);
-  }
-
-  fmat(x: number): string {
-    x = Math.trunc(x);
-    if (x < 10) {
-      return '0' + x;
-    }
-    return '' + x;
-  }
-
-  updateTime(): void {
-    let current = 0, remain = 0;
-    this.currentProgress = 0;
-    if (!Number.isNaN(this.audio.duration)) {
-      current = Math.trunc(this.audio.currentTime);
-      remain = Math.trunc(this.audio.duration) - current;
-      this.currentProgress = this.audio.currentTime / this.audio.duration * 100;
-    }
-    this.timeLeft = this.fmat(current / 60)  + ':' + this.fmat(current % 60);
-    this.timeRemain = this.fmat(remain / 60) + ':' + this.fmat(remain % 60);
-  }
-
-  togglePlayState() {
-    if (this.audio != null && !isNaN(this.audio.duration)) {
-      if (this.audio.paused) {
-        this.audio.play();
+    this.player.nextSong.subscribe((i: number) => {
+      if (i === 0) {
+        this.current.next(_.sample(this.songs));
       } else {
-        this.audio.pause();
+        i = (this.songs.indexOf(this.player.current) + i + this.songs.length) % this.songs.length;
+        this.current.next(this.songs[i]);
       }
-    }
-  }
+    });
 
-  next(x = 1): void {
-    let cur = this.songs.indexOf(this.current) + x;
-    cur = (cur + this.songs.length) % this.songs.length;
-    this.play(this.songs[cur]);
-  }
+    $(document).on('keyup', ev => {
+      if (ev.keyCode === 32) {
+        this.player.togglePlayState();
+      }
+    });
 
-  seek(e: any): void {
-    const wid: number = e.target.offsetWidth;
-    const x: number = e.offsetX;
-    if (this.audio != null && !isNaN(this.audio.duration)) {
-      const newTime = x / wid * this.audio.duration;
-      this.audio.currentTime = newTime;
-    }
+    $(document).on('contextmenu', () => false);
   }
 }

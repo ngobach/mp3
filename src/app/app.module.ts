@@ -8,6 +8,8 @@ import { MusicService } from './music.service';
 import { AssetsService } from './assets.service';
 import { StrLimitPipe } from './str-limit.pipe';
 import { SiteConfig } from './site-config';
+import { PlayerComponent } from './player/player.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 const CONFIG: SiteConfig = {
   albumId: 'knJHtLpJFszQVTkFxyFHZn',
@@ -18,7 +20,9 @@ const CONFIG: SiteConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    StrLimitPipe
+    StrLimitPipe,
+    PlayerComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,

@@ -1,50 +1,28 @@
-<div class="player-container">
-  <div class="spinner" *ngIf="!loaded">
-    <div class="rect1"></div>
-    <div class="rect2"></div>
-    <div class="rect3"></div>
-    <div class="rect4"></div>
-    <div class="rect5"></div>
-  </div>
-  <div class="player" [@fade]="playlistMode?'out':'in'" *ngIf="loaded">
-    <img src="{{thumbnailUrl}}" alt="thumbnail" class="thumbnail">
-    <div class="content">
-      <div class="title">{{name | limit:30}}</div>
-      <div class="artist">{{artist}}</div>
-      <div class="controls">
-        <div class="progress-time cf">
-          <span class="left">{{timeLeft}}</span>
-          <span class="right">{{timeRemain}}</span>
-        </div>
-        <div class="progress" (mousedown)="seek($event)"><div class="bar" [style.width]="currentProgress + '%'"></div></div>
-        <div class="loop-control cf">
-          <div class="left loop" [class.active]="loop" (click)="loop = true"></div>
-          <div class="right shuffle" [class.active]="!loop" (click)="loop = false"></div>
-        </div>
-        <div class="playback-control">
-          <div class="prev" (click)="next(-1)"></div>
-          <div class="play" [class.paused]="audio != null && audio.paused" (click)="togglePlayState()"></div>
-          <div class="next" (click)="next()"></div>
-        </div>
-      </div>
-      <div class="playlist-button" (click)="playlistMode = !playlistMode"></div>
-      <div class="volume-control">
-        <div class="volume-button" [class.muted]="audio.muted" (click)="audio.muted = !audio.muted"></div>
-        <div class="slider"></div>
-      </div>
-    </div>
+<div class="spinner-container" *ngIf="!loaded">
+  <div class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
   </div>
 </div>
+
+<div class="player-container" [@fade]="loaded?'in':'out'">
+  <div class="box">
+    <app-player></app-player>
+  </div>
+</div>
+
 <div class="playlist" [@fade]="'in'" *ngIf="playlistMode">
-    <div class="scroll-container">
-      <ul slimScroll [options]="scrollbarOptions">
-        <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)">
-          <div class="name">{{song.name}}</div>
-          <div class="artist">{{song.artist}}</div>
-        </li>
-      </ul>
-    </div>
+  <div class="scroll-container">
+    <ul slimScroll [options]="scrollbarOptions">
+      <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)">
+        <div class="name">{{song.name}}</div>
+        <div class="artist">{{song.artist}}</div>
+      </li>
+    </ul>
+  </div>
 </div>
-<a target="_blank" [href]="siteConfig.facebookUrl" class="facebook-container" [@fade]="'in'" *ngIf="loaded">
-    <img src="/assets/facebook.png" alt="facebook">
-</a>
+
+<!--<a target="_blank" [href]="siteConfig.facebookUrl" class="facebook-container" [@fade]="'in'" *ngIf="loaded">
+  <img src="/assets/facebook.png" alt="facebook">
+</a>-->
