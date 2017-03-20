@@ -13,7 +13,7 @@
  * Include this rule to trigger hasLayout and contain floats.
  */
 .cf {
-    *zoom: 1;
+    zoom: 1;
 }
 /** Spinners **/
 .spinner {
@@ -293,4 +293,30 @@
 
 .playlist ul li .artist {
     font-size: 9pt;
+}
+
+/***
+ * Facebook Icon
+ */
+
+.facebook-container {
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 0;
+    height: 0;
+    border: solid 32px #3498db;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transition: all ease 200ms;
+    &:hover {
+        border-right-color: #2980b9;
+        border-bottom-color: #2980b9;
+        right: 0;
+        bottom: 0;
+    }
+    & > img {
+        transform: translateX(2px) translateY(2px);
+    }
 }

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, OpaqueToken } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SlimScrollModule } from 'ng2-slimscroll';
 
@@ -22,7 +21,6 @@ const CONFIG: SiteConfig = {
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpModule,
     SlimScrollModule
   ],

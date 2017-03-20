@@ -55,31 +55,3 @@ body {
     left: -6px;
     outline: none;
 }
-
-/***
- * Facebook Icon
- */
-
-.facebook-container {
-    display: block;
-    position: absolute;
-    bottom: -5px;
-    right: -5px;
-    width: 0;
-    height: 0;
-    border: solid 32px #3498db;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    transition: all ease 200ms;
-}
-
-.facebook-container > img {
-    transform: translateX(2px) translateY(2px);
-}
-
-.facebook-container:hover {
-    border-right-color: #2980b9;
-    border-bottom-color: #2980b9;
-    right: 0;
-    bottom: 0;
-}
