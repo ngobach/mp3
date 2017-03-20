@@ -9,6 +9,7 @@ import { Song } from './song';
 import { SiteConfig } from './site-config';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import { PlayerComponent } from './player/player.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 import * as _ from 'lodash';
 
@@ -53,6 +54,8 @@ export class AppComponent implements OnInit {
   private assetsLoaded = false;
   @ViewChild(PlayerComponent)
   private player: PlayerComponent;
+  @ViewChild(PlaylistComponent)
+  private playlist: PlaylistComponent;
 
   private scrollbarOptions: SlimScrollOptions = {
     gridMargin: '0',
@@ -80,6 +83,7 @@ export class AppComponent implements OnInit {
       if (song != null) {
         this.title.setTitle(song.artist + ' - ' + song.name);
         this.player.play(song);
+        this.playlist.current = song;
       }
     });
     // Load playlist from zmp3

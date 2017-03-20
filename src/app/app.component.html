@@ -9,17 +9,7 @@
 <div class="player-container" [@fade]="loaded?'in':'out'">
   <div class="box">
     <app-player></app-player>
-  </div>
-</div>
-
-<div class="playlist" [@fade]="'in'" *ngIf="playlistMode">
-  <div class="scroll-container">
-    <ul slimScroll [options]="scrollbarOptions">
-      <li *ngFor="let song of songs" [class.active]="current === song" (click)="play(song)">
-        <div class="name">{{song.name}}</div>
-        <div class="artist">{{song.artist}}</div>
-      </li>
-    </ul>
+    <app-playlist [list]="songs" (itemSelected)="current.next($event)"></app-playlist>
   </div>
 </div>
 

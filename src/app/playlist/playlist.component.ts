@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { Song } from '../song';
 
 @Component({
   selector: 'app-playlist',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlaylistComponent implements OnInit {
 
-  constructor() { }
+  filter: string;
+  current: Song;
+
+  @Input() list: Song[];
+  @Output() itemSelected: EventEmitter<Song> = new EventEmitter();
+
+  constructor() {
+    this.list = [];
+  }
 
   ngOnInit() {
   }

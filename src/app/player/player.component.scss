@@ -1,5 +1,5 @@
 @import '../base';
-$height: 180px;
+$height: $thumbnail-size;
 
 .player {
     background: #FFF;
@@ -9,8 +9,8 @@ $height: 180px;
     flex-direction: row;
     
     .thumbnail {
-        width: 180px;
-        height: 180px;
+        width: $thumbnail-size;
+        height: $thumbnail-size;
         pointer-events: none;
     }
 
