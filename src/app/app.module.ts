@@ -5,6 +5,7 @@ import { SlimScrollModule } from 'ng2-slimscroll';
 
 import { AppComponent } from './app.component';
 import { MusicService } from './music.service';
+import { AssetsService } from './assets.service';
 import { StrLimitPipe } from './str-limit.pipe';
 import { SiteConfig } from './site-config';
 
@@ -26,6 +27,7 @@ const CONFIG: SiteConfig = {
   ],
   providers: [
     MusicService,
+    AssetsService,
     {
       provide: 'SiteConfig', useValue: CONFIG
     }

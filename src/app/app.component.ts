@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
+import { AssetsService } from './assets.service';
 import { MusicService } from './music.service';
 import { Song } from './song';
 import { SiteConfig } from './site-config';
@@ -10,20 +11,7 @@ import { SlimScrollOptions } from 'ng2-slimscroll';
 
 declare const $: any;
 
-const ASSESTS_IMAGES: string[] = [
-  'loop.png',
-  'loop_.png',
-  'next.png',
-  'pause.png',
-  'play.png',
-  'playlist.png',
-  'prev.png',
-  'shuffle.png',
-  'shuffle_.png',
-  'volume.png',
-  'volume_.png',
-  'facebook.png'
-];
+
 
 @Component({
   selector: 'app-root',
@@ -58,11 +46,11 @@ const ASSESTS_IMAGES: string[] = [
   ]
 })
 export class AppComponent implements OnInit {
-  private thumbnailUrl: string = '';
+  private thumbnailUrl = '';
   private audio: HTMLAudioElement;
   private songs: Song[];
   private current: Song;
-  private currentProgress: number = 0;
+  private currentProgress = 0;
   private playlistMode = false;
   private timeLeft = '00:00';
   private timeRemain = '00:00';
@@ -78,10 +66,10 @@ export class AppComponent implements OnInit {
 
   constructor(
       private title: Title,
+      private assetsService: AssetsService,
       private musicService: MusicService,
       private er: ElementRef,
       @Inject('SiteConfig') private siteConfig: SiteConfig) {
-    ASSESTS_IMAGES.push(siteConfig.defaultThumbnail);
     this.thumbnailUrl = siteConfig.defaultThumbnail;
   }
 
@@ -139,16 +127,7 @@ export class AppComponent implements OnInit {
       .then(() => setTimeout(() => this.initSlider(), 100));
 
     // Load image assets
-    Promise.all(ASSESTS_IMAGES.map(file => new Promise((res, rej) => {
-      const img = new Image();
-      if (file.startsWith('http')) {
-        img.src = file;
-      } else {
-        img.src = '/assets/' + file;
-      }
-      img.onload = res;
-      img.onerror = rej;
-    }))).then(() => this.assetsLoaded = true);
+    this.assetsService.load().then(() => this.assetsLoaded = true);
 
     $(document).on('keyup', ev => {
       if (ev.keyCode === 27) {
