@@ -25,8 +25,8 @@
         "../node_modules/jquery-ui-dist/jquery-ui.js",
         "../src/polyfills/web-animations.min.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
