@@ -6,7 +6,7 @@ Website nghe nhạc trực tuyến. Xây dựng trên Angular 2 Framework
 Trước tiên cần có các phần mềm: NodeJS và angular-cli.
 
 * NodeJS: [Tải về](https://nodejs.org/)
-* Angular-CLI: `npm i -g angular-cli`
+* Angular-CLI: `npm i -g @angular/cli@1`
 
 ## Chỉnh sửa
 
@@ -16,7 +16,7 @@ Trước tiên cần có các phần mềm: NodeJS và angular-cli.
 
 Để chạy website, gõ lệnh sau khi ở thư mục gốc
 ```
-ng serve
+npm start
 ```
 
 ## Build
@@ -24,7 +24,7 @@ ng serve
 Để build website, có thể chạy lệnh
 
 ```
-ng build -prod -sm false
+npm build
 ```
 
 Sau khi lệnh đã chạy xong ta có được thư mục **dist**, upload thư mục này lên webserver.
