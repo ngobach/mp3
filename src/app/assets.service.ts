@@ -7,7 +7,6 @@ const ASSESTS_IMAGES: string[] = [
   'next.png',
   'pause.png',
   'play.png',
-  'playlist.png',
   'prev.png',
   'shuffle.png',
   'shuffle_.png',
