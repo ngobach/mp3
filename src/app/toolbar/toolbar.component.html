@@ -5,6 +5,12 @@
 
     <div class="stretch"></div>
 
+    <div class="item selector" [style.border-color]="selected.color">
+        <span (click)="open = true">{{selected.title}}</span>
+        <div class="menu" *ngIf="open">
+            <span *ngFor="let item of albums" [style.border-color]="item.color" (click)="select(item); open = false;">{{item.title}}</span>
+        </div>
+    </div>
     <div class="item search" [class.error]="searchError">
         <input type="text" [(ngModel)]="value" (keyup)="$event.stopPropagation()" placeholder="Search...">
         <button class="cancel" *ngIf="value" (click)="value=''">&times;</button>

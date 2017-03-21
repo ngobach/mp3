@@ -1,8 +1,12 @@
 <div slimScroll [options]="scrollbarOptions" class="slim">
     <ul>
-        <li *ngFor="let item of (list | songFilter:filter); let i = index" [class.active]="current === item" (click)="itemSelected.emit(item)">
+        <li *ngFor="let item of (list | albumFilter: album | songFilter:filter); let i = index" [class.active]="current === item"
+            (click)="itemSelected.emit(item)">
             <div class="num">{{i+1}}.</div>
             <div class="name">{{item.name}}</div>
+            <div class="tags">
+                <span class="tag" *ngFor="let album of item.albums" [style.background-color]="album.color">{{album.title}}</span>
+            </div>
             <div class="div" style="flex-grow: 1"></div>
             <div class="artist">{{item.artist}}</div>
         </li>

@@ -8,6 +8,8 @@ import { Song } from './song';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import { PlayerComponent } from './player/player.component';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { Album } from './site-config';
+import { AlbumFilterPipe } from './album-filter.pipe';
 
 import * as _ from 'lodash';
 
@@ -54,7 +56,8 @@ export class AppComponent implements OnInit {
   private player: PlayerComponent;
   @ViewChild(PlaylistComponent)
   private playlist: PlaylistComponent;
-
+  album: Album;
+  albumFilter: AlbumFilterPipe;
   filter: string;
   private scrollbarOptions: SlimScrollOptions = {
     gridMargin: '0',
@@ -65,10 +68,11 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-      private title: Title,
-      private assetsService: AssetsService,
-      private musicService: MusicService
+    private title: Title,
+    private assetsService: AssetsService,
+    private musicService: MusicService
   ) {
+    this.albumFilter = new AlbumFilterPipe();
   }
 
   private get loaded(): boolean {
@@ -86,20 +90,26 @@ export class AppComponent implements OnInit {
       }
     });
     // Load playlist from zmp3
-    this.musicService.getList()
-      .then(data => {
-        this.songs = data;
+    this.musicService.loadPlaylists()
+      .then(songs => {
+        this.songs = songs;
         this.current.next(_.sample(this.songs));
       });
     // Load assets
     this.assetsService.load().then(() => this.assetsLoaded = true);
 
     this.player.nextSong.subscribe((i: number) => {
+      const songs = this.albumFilter.transform(this.songs, this.album);
       if (i === 0) {
-        this.current.next(_.sample(this.songs));
+        this.current.next(_.sample(songs));
       } else {
-        i = (this.songs.indexOf(this.player.current) + i + this.songs.length) % this.songs.length;
-        this.current.next(this.songs[i]);
+        const current = songs.indexOf(this.player.current);
+        if (current >= 0) {
+          i = (current + i + songs.length) % songs.length;
+          this.current.next(songs[i]);
+        } else {
+          this.current.next(_.sample(songs));
+        }
       }
     });
 

@@ -9,8 +9,8 @@
 <div class="player-container" [@fade]="loaded?'in':'out'">
   <div class="box">
     <app-player></app-player>
-    <app-toolbar [(filter)]="filter" [searchError]="songs && (songs | songFilter:filter).length == 0"></app-toolbar>
-    <app-playlist [list]="songs" (itemSelected)="current.next($event); filter=''" [filter]="filter"></app-playlist>
+    <app-toolbar [(filter)]="filter" [searchError]="songs && (songs | albumFilter:album | songFilter:filter).length == 0" (albumSelected)="album = $event"></app-toolbar>
+    <app-playlist [list]="songs" (itemSelected)="current.next($event); filter=''" [filter]="filter" [album]="album"></app-playlist>
   </div>
 </div>
 

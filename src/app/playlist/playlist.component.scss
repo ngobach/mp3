@@ -49,5 +49,19 @@ ul {
             font-size: 9pt;
             color: rgba(255, 255, 255, .8);
         }
+        .tags {
+            margin-left: 8px;
+            &>.tag {
+                display: inline-block;
+                height: 18px;
+                font-size: 9pt;
+                color: #FFFFFF;
+                border-radius: 4px;
+                background: $primary-color;
+                padding: 0 4px;
+                margin-right: 4px;
+                box-shadow: 0 0 4px rgba(0, 0, 0, .4);
+            }
+        }
     }
 }

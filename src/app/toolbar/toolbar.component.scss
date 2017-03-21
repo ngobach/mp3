@@ -3,6 +3,7 @@ $radius: 8px;
 $nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
 
 .toolbar {
+    position: relative;
     background: $toolbar-background;
     padding: 8px;
     text-align: center;
@@ -14,10 +15,12 @@ $nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
     .item {
         border: solid 1px lighten($toolbar-background, 15);
         padding: 0px 8px;
-        width: 180px;
         height: 26px;
         border-radius: $radius;
+        margin: 0 2px;
+
         &.search {
+            width: 180px;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -43,14 +46,38 @@ $nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
                 outline: none;
                 cursor: pointer;
             }
+            input[type="text"] {
+                border: none;
+                background: none;
+                height: 100%;
+                width: 100%;
+                color: #FFFFFF;
+                outline: none;
+            }
         }
-        input[type="text"] {
-            border: none;
-            background: none;
-            height: 100%;
-            width: 100%;
-            color: #FFFFFF;
-            outline: none;
+        &.selector {
+            & > span {
+                cursor: pointer;
+            }
+            .menu {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: $toolbar-background;
+                span {
+                    display: inline-block;
+                    border: solid 1px #666666;
+                    padding: 0 8px;
+                    cursor: pointer;
+                    border-radius: $radius;
+                }
+            }
         }
     }
     .stretch {

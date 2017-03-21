@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 
+import { Album } from '../site-config';
 import { Song } from '../song';
 
 @Component({
@@ -15,6 +16,7 @@ export class PlaylistComponent implements OnInit {
   @Input() list: Song[];
   @Output() itemSelected: EventEmitter<Song> = new EventEmitter();
   @Input() filter: string;
+  @Input() album: Album;
 
   scrollbarOptions: SlimScrollOptions = {
     gridMargin: '0',

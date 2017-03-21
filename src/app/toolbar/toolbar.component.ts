@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 
-import { SiteConfig, SocialLink } from '../site-config';
+import { SiteConfig, SocialLink, Album } from '../site-config';
 
 @Component({
   selector: 'app-toolbar',
@@ -12,6 +12,11 @@ export class ToolbarComponent implements OnInit {
   @Input() filter: string;
   @Output() filterChange: EventEmitter<string> = new EventEmitter();
   @Input() searchError: boolean;
+  @Output() albumSelected: EventEmitter<Album> = new EventEmitter();
+
+  albums: Album[];
+  selected: Album;
+  open: boolean;
 
   get value() {
     return this.filter;
@@ -24,9 +29,16 @@ export class ToolbarComponent implements OnInit {
 
   constructor( @Inject('SiteConfig') sc: SiteConfig) {
     this.socialLinks = sc.socialLinks;
+    this.albums = sc.albums.slice();
+    this.selected = this.albums[0];
+    this.open = false;
   }
 
   ngOnInit() {
   }
 
+  select(item: Album) {
+    this.selected = item;
+    this.albumSelected.emit(item);
+  }
 }
