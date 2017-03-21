@@ -1,11 +1,23 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/core';
 
 import { SiteConfig, SocialLink, Album } from '../site-config';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  styleUrls: ['./toolbar.component.scss'],
+  animations: [
+    trigger('slide', [
+      transition(':enter', [
+        style({ transform: 'translateY(-100%)' }),
+        animate('200ms ease-out')
+      ]),
+      transition(':leave', [
+        animate('200ms ease-out', style({ transform: 'translateY(-100%)' })),
+      ]),
+    ])
+  ]
 })
 export class ToolbarComponent implements OnInit {
 

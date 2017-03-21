@@ -7,7 +7,7 @@
 
     <div class="item selector" [style.border-color]="selected.color">
         <span (click)="open = true">{{selected.title}}</span>
-        <div class="menu" *ngIf="open">
+        <div class="menu" *ngIf="open" [@slide]='true'>
             <span *ngFor="let item of albums" [style.border-color]="item.color" (click)="select(item); open = false;">{{item.title}}</span>
         </div>
     </div>

@@ -12,6 +12,8 @@ $nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
     flex-direction: row;
     align-items: center;
     flex-shrink: 0;
+    overflow: hidden;
+
     .item {
         border: solid 1px lighten($toolbar-background, 15);
         padding: 0px 8px;
@@ -89,11 +91,11 @@ $nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
             display: inline-block;
             color: #FFFFFF;
             border-radius: $radius;
-            border: solid 2px $nav-color;
+            border: solid 1px $nav-color;
             background: transparent;
             padding: 0 4px;
             text-decoration: none;
-            font-size: 9pt;
+            // font-size: 9pt;
             /*font-weight: bold;*/
             transition: background ease 200ms;
             margin-left: 4px;
