@@ -11,11 +11,17 @@ import { StrLimitPipe } from './str-limit.pipe';
 import { SiteConfig } from './site-config';
 import { PlayerComponent } from './player/player.component';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { SongFilterPipe } from './song-filter.pipe';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 const CONFIG: SiteConfig = {
   albumId: 'knJHtLpJFszQVTkFxyFHZn',
   defaultThumbnail: 'https://graph.facebook.com/134325980235485/picture?width=180&height=180',
-  facebookUrl: 'https://fb.me/r4yqu4z4'
+  socialLinks: [
+    {title: 'Blog', url: 'https://blog.ngobach.com'},
+    {title: 'Facebook', url: 'https://fb.me/r4yqu4z4'},
+    {title: 'Github', url: 'https://github.com/thanbaiks'},
+  ]
 };
 
 @NgModule({
@@ -23,7 +29,9 @@ const CONFIG: SiteConfig = {
     AppComponent,
     StrLimitPipe,
     PlayerComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    SongFilterPipe,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,

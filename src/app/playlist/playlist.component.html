@@ -1,12 +1,6 @@
-<div class="toolbar">
-    <div class="item">Playlist</div>
-    <div class="item">
-        <input type="text" [(ngModel)]="filter" (keyup)="$event.stopPropagation()" placeholder="Search...">
-    </div>
-</div>
-<div slimScroll class="slim">
+<div slimScroll [options]="scrollbarOptions" class="slim">
     <ul>
-        <li *ngFor="let item of list; let i = index" [class.active]="current === item" (click)="itemSelected.emit(item)">
+        <li *ngFor="let item of (list | songFilter:filter); let i = index" [class.active]="current === item" (click)="itemSelected.emit(item)">
             <div class="num">{{i+1}}.</div>
             <div class="name">{{item.name}}</div>
             <div class="div" style="flex-grow: 1"></div>

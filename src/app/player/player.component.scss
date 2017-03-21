@@ -2,7 +2,7 @@
 $height: $thumbnail-size;
 
 .player {
-    background: #FFF;
+    background: #FFFFFF;
     height: $height;
     position: relative;
     display: flex;
@@ -11,7 +11,13 @@ $height: $thumbnail-size;
     .thumbnail {
         width: $thumbnail-size;
         height: $thumbnail-size;
-        pointer-events: none;
+        position: relative;
+        img {
+            width: $thumbnail-size;
+            height: $thumbnail-size;
+            position: absolute;
+            pointer-events: none;
+        }
     }
 
     .content {
@@ -98,7 +104,8 @@ $height: $thumbnail-size;
             flex-direction: row;
             justify-content: center;
             align-items: center;
-
+            margin-top: 20px;
+            
             .play {
                 width: 50px;
                 height: 50px;

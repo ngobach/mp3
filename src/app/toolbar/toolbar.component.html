@@ -1,0 +1,12 @@
+<div class="toolbar">
+    <div class="navigation">
+        <a *ngFor="let item of socialLinks" [href]="item.url" target="_blank">{{item.title}}</a>
+    </div>
+
+    <div class="stretch"></div>
+
+    <div class="item search" [class.error]="searchError">
+        <input type="text" [(ngModel)]="value" (keyup)="$event.stopPropagation()" placeholder="Search...">
+        <button class="cancel" *ngIf="value" (click)="value=''">&times;</button>
+    </div>
+</div>

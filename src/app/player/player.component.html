@@ -1,5 +1,7 @@
     <div class="player">
-      <img [src]="thumbnailUrl" alt="thumbnail" class="thumbnail">
+      <div class="thumbnail">
+        <img *ngFor="let item of thumbnails" [src]="item" alt="thumbnail" [@fade]="'in'">
+      </div>
       <div class="content">
         <div class="title">{{name | limit:80}}</div>
         <div class="artist">{{artist}}</div>

@@ -1,0 +1,81 @@
+$toolbar-background: rgb(44, 62, 80);
+$radius: 8px;
+$nav-color: lighten($toolbar-background, 15);/*#2980b9;*/
+
+.toolbar {
+    background: $toolbar-background;
+    padding: 8px;
+    text-align: center;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    .item {
+        border: solid 1px lighten($toolbar-background, 15);
+        padding: 0px 8px;
+        width: 180px;
+        height: 26px;
+        border-radius: $radius;
+        &.search {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-right: 2px;
+
+            &.error {
+                border-color: #c0392b;
+            }
+            input[type="text"] {
+                flex-grow: 1;
+            }
+            button {
+                width: 20px;
+                height: 20px;
+                border: none;
+                border-radius: 50%;
+                line-height: 20px;
+                font-size: 12pt;
+                font-weight: bold;
+                text-align: center;
+                background: rgba(255,255,255, 0.1);
+                color: rgba(255,255,255, 0.5);
+                outline: none;
+                cursor: pointer;
+            }
+        }
+        input[type="text"] {
+            border: none;
+            background: none;
+            height: 100%;
+            width: 100%;
+            color: #FFFFFF;
+            outline: none;
+        }
+    }
+    .stretch {
+        flex-grow: 1;
+    }
+
+    .navigation {
+        &>a {
+            display: inline-block;
+            color: #FFFFFF;
+            border-radius: $radius;
+            border: solid 2px $nav-color;
+            background: transparent;
+            padding: 0 4px;
+            text-decoration: none;
+            font-size: 9pt;
+            /*font-weight: bold;*/
+            transition: background ease 200ms;
+            margin-left: 4px;
+            &:first-child {
+                margin-left: 0;
+            }
+            &:hover {
+                background: $nav-color;
+            }
+        }
+    }
+}

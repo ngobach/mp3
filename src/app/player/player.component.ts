@@ -1,4 +1,16 @@
-import { Component, OnInit, Inject, EventEmitter, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Inject,
+  EventEmitter,
+  ElementRef,
+  animate,
+  trigger,
+  state,
+  style,
+  transition
+} from '@angular/core';
+
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
@@ -11,10 +23,24 @@ declare const $: any;
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss']
+  styleUrls: ['./player.component.scss'],
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({
+          opacity: 0,
+          transform: 'scale(0.5)'
+        }),
+        animate('0.4s ease-out', style({
+          opacity: 1,
+          transform: 'scale(1)'
+        }))
+      ])
+    ])
+  ]
 })
 export class PlayerComponent implements OnInit {
-  private thumbnailUrl = '';
+  private thumbnails = [];
   private audio: HTMLAudioElement;
   private currentProgress = 0;
   private timeLeft = '00:00';
@@ -46,7 +72,7 @@ export class PlayerComponent implements OnInit {
     private musicService: MusicService,
     private er: ElementRef
   ) {
-    this.thumbnailUrl = siteConfig.defaultThumbnail;
+    this.thumbnails.push(siteConfig.defaultThumbnail);
     this.nextSong = new EventEmitter();
   }
 
@@ -66,12 +92,15 @@ export class PlayerComponent implements OnInit {
         .catch(() => {
           return Observable.of(this.siteConfig.defaultThumbnail);
         }))
-      .subscribe(url => this.thumbnailUrl = url);
+      .subscribe(url => this.thumbnails.push(url) && setTimeout(() => this.thumbnails.shift(), 1000));
 
     this.initSlider();
   }
 
   play(song: Song) {
+    if (song === this.current) {
+      return;
+    }
     this.current = song;
     this.audio.src = song.source;
     this.audio.play();

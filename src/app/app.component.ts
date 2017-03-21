@@ -1,12 +1,10 @@
-import { Component, OnInit, trigger, state, style, transition, animate, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 
 import { AssetsService } from './assets.service';
 import { MusicService } from './music.service';
 import { Song } from './song';
-import { SiteConfig } from './site-config';
 import { SlimScrollOptions } from 'ng2-slimscroll';
 import { PlayerComponent } from './player/player.component';
 import { PlaylistComponent } from './playlist/playlist.component';
@@ -57,6 +55,7 @@ export class AppComponent implements OnInit {
   @ViewChild(PlaylistComponent)
   private playlist: PlaylistComponent;
 
+  filter: string;
   private scrollbarOptions: SlimScrollOptions = {
     gridMargin: '0',
     gridBackground: 'rgba(0, 0, 0, .2)',
