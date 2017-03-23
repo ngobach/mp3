@@ -15,5 +15,4 @@ export interface SiteConfig {
   defaultThumbnail: string;
   socialLinks: SocialLink[];
   albums: Album[];
-  songs?: Promise<Song[]>;
 }
