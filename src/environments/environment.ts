@@ -20,12 +20,32 @@ export const CONFIG: SiteConfig = {
     },
     {
       title: 'Warsongs',
-      id: 'ZHcHtLhBFWxBQtZFJtbmLG',
+      id: 'IOZW6DUB',
       color: '#e74c3c'
     }, {
       title: 'Electro',
-      id: 'kGxmtLXdFWxLlyLbxyDHLm',
+      id: 'IOZW6DO6',
       color: '#e67e22'
+    }, {
+      title: 'Light',
+      id: 'IOZW6DO7',
+      color: '#f1c40f'
+    }, {
+      title: 'vPOP',
+      id: 'IOZW6DO9',
+      color: '#3498db'
+    }, {
+      title: 'Broken',
+      id: 'IOZW6DOC',
+      color: '#9b59b6'
+    }, {
+      title: 'US-UK',
+      id: 'IOZW6DUW',
+      color: '#7f8c8d'
+    }, {
+      title: 'CJK',
+      id: 'IOZW6DOB',
+      color: '#27ae60'
     }
   ]
 };

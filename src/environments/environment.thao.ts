@@ -13,17 +13,17 @@ export const CONFIG: SiteConfig = {
     },
     {
       title: 'Không lời',
-      id: 'ZHJmykhdApHZFykFxyFGkm',
+      id: 'IOZW6DO6',
       color: '#e74c3c'
     },
     {
       title: 'US-UK',
-      id: 'LHcnykXdlQcsLyZDJyDGZm',
+      id: 'IOZW6DO6',
       color: '#e67e22'
     },
     {
       title: 'Thao',
-      id: 'LnxGTLhBlQubNtLbxyFHLn',
+      id: 'IOZW6DO6',
       color: '#2980b9'
     },
   ]
