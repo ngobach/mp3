@@ -88,10 +88,10 @@ export class PlayerComponent implements OnInit {
     // Subject thumbnail
     this.subThumbnail = new Subject();
     this.subThumbnail
-      .switchMap(id => this.musicService.getThumbnail(id)
-        .catch(() => {
-          return Observable.of(this.siteConfig.defaultThumbnail);
-        }))
+      .distinctUntilChanged()
+      .switchMap(url => {
+        return this.musicService.getThumbnail(url).then(() => url);
+      })
       .subscribe(url => this.thumbnails.push(url) && setTimeout(() => this.thumbnails.shift(), 1000));
 
     this.initSlider();
@@ -105,7 +105,11 @@ export class PlayerComponent implements OnInit {
     this.audio.src = song.source;
     this.audio.play();
     setTimeout(() => this.updateTime(), 0);
-    this.subThumbnail.next(song.zmp3Id);
+    if (song.cover) {
+      this.subThumbnail.next(song.cover);
+    } else {
+      this.subThumbnail.next(this.siteConfig.defaultThumbnail);
+    }
   }
 
   fmat(x: number): string {

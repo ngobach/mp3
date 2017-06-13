@@ -7,7 +7,8 @@ import { SiteConfig } from './site-config';
 import { Song } from './song';
 import * as _ from 'lodash';
 
-const ALBUM_URL_PREFIX = 'https://cors-anywhere.herokuapp.com/http://mp3.zing.vn/json/playlist/get-source/playlist/';
+const URL_RESOLVER =
+  id => 'http://api.mp3.zing.vn/api/mobile/playlist/getsonglist?requestdata={%22id%22:%22' + id + '%22, %22length%22: 1000}&fromvn=true';
 
 @Injectable()
 export class MusicService {
@@ -21,19 +22,29 @@ export class MusicService {
     this._cache = new Map();
   }
 
+  corsGet(url: string, retries = 5) {
+    return this.http.get('http://cors-anywhere.herokuapp.com/' + url).toPromise().catch(err => {
+      if (retries) {
+        return this.corsGet(url, retries - 1);
+      } else {
+        return Promise.reject(err);
+      }
+    });
+  }
+
   loadPlaylists(): Promise<Song[]> {
     if (this._allSongs != null) {
       return this._allSongs;
     }
 
     return this._allSongs = Promise.all(this.siteConfig.albums.filter(album => album.id).map(album => {
-      return this.http.get(ALBUM_URL_PREFIX + album.id).toPromise()
-        .then(resp => (resp.json().data as any[]).map(song => <Song>({
-          name: song.name,
+      return this.corsGet(URL_RESOLVER(album.id))
+        .then(resp => (resp.json().docs as any[]).map(song => ({
+          name: song.title,
           artist: song.artist,
-          source: song.source_list[0],
-          cover: song.cover,
-          zmp3Id: song.id,
+          source: song.source['128'],
+          cover: song.thumbnail ? 'http://image.mp3.zdn.vn/' + song.thumbnail : null,
+          zmp3Id: song.song_id,
           albums: [album]
         })));
     })).then((x: Song[][]) => {
@@ -51,28 +62,12 @@ export class MusicService {
     });
   }
 
-  getThumbnail(id: string): Observable<string> {
-    let obs: Observable<string>;
-    if (this._cache.has(id)) {
-      obs = Observable.of(this._cache.get(id));
-    } else {
-      obs = this.http
-        .get('https://cors-anywhere.herokuapp.com/http://m.mp3.zing.vn/bai-hat/Nothing/' + id + '.html')
-        .map(r => {
-          const url = r.text().match(/url\(\'(.+?)\'\)/)[1];
-          this._cache.set(id, url);
-          return url;
-        });
-    }
-
-    obs = obs.switchMap(url => {
-      const img = new Image();
-      img.src = url;
-      return new Promise((res, rej) => {
-        img.onload = () => res(url);
-        img.onerror = rej;
-      });
+  getThumbnail(url: string): Promise<null> {
+    const img = new Image();
+    img.src = url;
+    return new Promise((res, rej) => {
+      img.onload = () => res();
+      img.onerror = rej;
     });
-    return obs;
   }
 }
