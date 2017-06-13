@@ -6,7 +6,7 @@ Website nghe nhạc trực tuyến. Xây dựng trên Angular 2 Framework
 Trước tiên cần có các phần mềm: NodeJS và angular-cli.
 
 * NodeJS: [Tải về](https://nodejs.org/)
-* Angular-CLI: `npm i -g @angular/cli@1`
+* Angular-CLI: `npm i -g @angular/cli`
 
 ## Chỉnh sửa
 
