@@ -1,13 +1,8 @@
 import { Router } from 'express';
-import Song from './models/Song';
+import api from './api';
 
-const routes = Router();
+const routes = new Router();
 
-routes.get('/songs', async (req, res) => {
-  const songs = await Song.find().exec();
-  res.send(songs);
-});
-
-routes.post('/')
+routes.use('/api', api);
 
 export default routes;
